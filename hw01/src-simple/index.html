@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type="text/css">
+        table, th, td {
+            border: 1px solid blue;
+            margin: 10px auto;
+            padding: 1px 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <br><br>
+    <button type="button" onclick="tableToCSV()">
+        download CSV
+    </button>
+
+    <script type="text/javascript">
+        // 隨機生成指定範圍的整數
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 隨機生成一個班級
+        function getRandomClass() {
+            var classOptions = ['電資四', '資工系', '資工所', '電資AI', '電資資安', '創新AI'];
+            return classOptions[getRandomInt(0, classOptions.length - 1)];
+        }
+
+        // 隨機生成一個學號
+        function getRandomStudentID() {
+            var randomPrefix = ['111', '112'];
+            var randomMiddle = ['590', '598', 'C52', 'C53', 'C71'];
+            var randomSuffix = ('00' + getRandomInt(0, 999)).slice(-3);
+            return randomPrefix[getRandomInt(0, 1)] +
+                   randomMiddle[getRandomInt(0, randomMiddle.length - 1)] +
+                   randomSuffix;
+        }
+
+        // 隨機生成一個姓名
+        function getRandomName() {
+            var randomChar = String.fromCharCode(getRandomInt(0x4e00, 0x51ff));
+            return randomChar + randomChar + randomChar;
+        }
+
+        // 隨機生成一個 GitHub 帳號
+        function getRandomGitHub() {
+            return (Math.random() + 1).toString(36).substring(2);
+        }
+
+        // 隨機生成一個分數
+        function getRandomScore() {
+            return getRandomInt(0, 9);
+        }
+
+        // 產生一個隨機學生資料
+        function generateRandomStudentData() {
+            var studentData = [];
+            studentData.push(a3.length); // 序號
+            studentData.push(getRandomClass()); // 班級
+            studentData.push(getRandomStudentID()); // 學號
+            studentData.push(getRandomName()); // 姓名
+            studentData.push(getRandomGitHub()); // GitHub
+            for (var j = 0; j < 10; j++) {
+                studentData.push(getRandomScore()); // 作業一至作業十的分數
+            }
+            return studentData;
+        }
+
+        // 產生所有學生資料
+        var a3 = [];
+        var header = ['序號', '班級', '學號', '姓名', 'GitHub', '作業一', '作業二', '作業三', '作業四', '作業五', '作業六', '作業七', '作業八', '作業九', '作業十'];
+        a3.push(header);
+        for (var i = 0; i < 120; i++) {
+            a3.push(generateRandomStudentData());
+        }
+
+        // 生成表格
+        var table = document.createElement('table');
+        for (var row of a3) {
+            table.insertRow();
+            for (var cell of row) {
+                let newCell = table.rows[table.rows.length - 1].insertCell();
+                newCell.textContent = cell;
+            }
+        }
+        document.body.appendChild(table);
+
+        // 將表格轉為 CSV
+        function tableToCSV() {
+            var csv_data = [];
+            var rows = document.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var cols = rows[i].querySelectorAll('td,th');
+                var csvrow = [];
+                for (var j = 0; j < cols.length; j++) {
+                    csvrow.push(cols[j].innerHTML);
+                }
+                csv_data.push(csvrow.join(","));
+            }
+            csv_data = csv_data.join('\n');
+            downloadCSVFile(csv_data);
+        }
+
+        // 下載 CSV 檔案
+        function downloadCSVFile(csv_data) {
+            var CSVFile = new Blob([csv_data], {
+                type: "text/csv"
+            });
+            var temp_link = document.createElement('a');
+            temp_link.download = "data.csv";
+            var url = window.URL.createObjectURL(CSVFile);
+            temp_link.href = url;
+            temp_link.style.display = "none";
+            document.body.appendChild(temp_link);
+            temp_link.click();
+            document.body.removeChild(temp_link);
+        }
+    </script>
+</body>
+</html>
