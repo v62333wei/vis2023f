@@ -1,0 +1,14 @@
+{
+  "name": "1fca226ac84d82aa",
+  "main": "1fca226ac84d82aa@22.js",
+  "version": "22.0.0",
+  "homepage": "https://observablehq.com/d/1fca226ac84d82aa",
+  "author": {
+    "name": "vick's Workspace",
+    "url": "https://observablehq.com/@vick19833-ws"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
